@@ -27,6 +27,7 @@ dockers_v2:
       - "v{{ .Version }}"
     platforms:
       - linux/amd64
+    sbom: false
 
 changelog:
   sort: asc
