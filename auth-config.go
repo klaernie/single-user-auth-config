@@ -81,9 +81,7 @@ func (a *authHandler) OnPassword(metadata metadata.ConnectionAuthPendingMetadata
     metadata.ConnectionAuthenticatedMetadata,
     error,
 ) {
-    if os.Getenv("CONTAINERSSH_ALLOW_ALL") == "1" ||
-        metadata.Username == "foo" ||
-        metadata.Username == "busybox" {
+	if metadata.Username == os.Getenv("CONTAINERSSH_USER") && string(password[:]) == os.Getenv("CONTAINERSSH_PASSWORD") {
         return true, metadata.Authenticated(metadata.Username), nil
     }
     return false, metadata.AuthFailed(), nil
@@ -110,9 +108,6 @@ func (a *authHandler) OnPubKey(meta metadata.ConnectionAuthPendingMetadata, publ
     metadata.ConnectionAuthenticatedMetadata,
     error,
 ) {
-    if meta.Username == "foo" || meta.Username == "busybox" {
-        return true, meta.Authenticated(meta.Username), nil
-    }
     return false, meta.AuthFailed(), nil
 }
 
