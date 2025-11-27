@@ -1,0 +1,41 @@
+# The lines below are called `modelines`. See `:help modeline`
+# Feel free to remove those if you don't want/need to use them.
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+# vim: set ts=2 sw=2 tw=0 fo=cnqoj
+
+version: 2
+
+before:
+  hooks:
+    # You may remove this if you don't use go modules.
+    - go mod tidy
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+
+dockers_v2:
+  - id: auth-config
+    dockerfile: Dockerfile
+    images:
+      - ghcr.io/klaernie/single-user-auth-config
+    tags:
+      - "v{{ .Version }}"
+    platforms:
+      - linux/amd64
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+
+release:
+  footer: >-
+
+    ---
+
+    Released by [GoReleaser](https://github.com/goreleaser/goreleaser).
